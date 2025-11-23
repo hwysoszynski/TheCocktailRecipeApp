@@ -1,4 +1,4 @@
-import { X, Star, Heart, Check } from 'lucide-react';
+import { X, Star, Heart, Check, Edit2 } from 'lucide-react';
 import { Cocktail } from '../types/cocktail';
 import { motion } from 'motion/react';
 
@@ -8,6 +8,7 @@ interface CocktailDetailProps {
   onToggleFavourite: (id: string) => void;
   onToggleHasHad: (id: string) => void;
   onUpdateRating: (id: string, rating: number) => void;
+  onEdit: (cocktail: Cocktail) => void;
   darkMode?: boolean;
 }
 
@@ -17,6 +18,7 @@ export function CocktailDetail({
   onToggleFavourite,
   onToggleHasHad,
   onUpdateRating,
+  onEdit,
   darkMode = false,
 }: CocktailDetailProps) {
   return (
@@ -54,6 +56,14 @@ export function CocktailDetail({
                 className="absolute top-4 right-4 w-10 h-10 backdrop-blur-xl bg-white/30 border border-white/40 rounded-full flex items-center justify-center hover:bg-white/40 transition-all"
               >
                 <X size={20} className="text-white" />
+              </button>
+
+              {/* Edit Button */}
+              <button
+                onClick={() => onEdit(cocktail)}
+                className="absolute top-4 right-16 w-10 h-10 backdrop-blur-xl bg-white/30 border border-white/40 rounded-full flex items-center justify-center hover:bg-white/40 transition-all"
+              >
+                <Edit2 size={18} className="text-white" />
               </button>
 
               {/* Title Overlay */}

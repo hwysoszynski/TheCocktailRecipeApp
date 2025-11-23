@@ -4,6 +4,7 @@ import { CocktailList } from './components/CocktailList';
 import { SettingsScreen } from './components/SettingsScreen';
 import { CocktailDetail } from './components/CocktailDetail';
 import { AddCocktailForm } from './components/AddCocktailForm';
+import { EditCocktailForm } from './components/EditCocktailForm';
 import { BottomNav } from './components/BottomNav';
 import { MOCK_COCKTAILS, Cocktail } from './types/cocktail';
 import { AnimatePresence } from 'motion/react';
@@ -13,6 +14,7 @@ export default function App() {
   const [cocktails, setCocktails] = useState<Cocktail[]>(MOCK_COCKTAILS);
   const [selectedCocktail, setSelectedCocktail] = useState<Cocktail | null>(null);
   const [showAddForm, setShowAddForm] = useState(false);
+  const [editingCocktail, setEditingCocktail] = useState<Cocktail | null>(null);
   const [darkMode, setDarkMode] = useState(false);
 
   const handleToggleFavourite = (id: string) => {
@@ -66,6 +68,23 @@ export default function App() {
     setCocktails((prev) => [...prev, { ...newCocktail, id }]);
   };
 
+  const handleEditCocktail = (id: string, updatedCocktail: Omit<Cocktail, 'id'>) => {
+    setCocktails((prev) =>
+      prev.map((cocktail) =>
+        cocktail.id === id ? { ...updatedCocktail, id } : cocktail
+      )
+    );
+    // Update selected cocktail if it's the one being modified
+    if (selectedCocktail?.id === id) {
+      setSelectedCocktail({ ...updatedCocktail, id });
+    }
+  };
+
+  const handleOpenEdit = (cocktail: Cocktail) => {
+    setEditingCocktail(cocktail);
+    setSelectedCocktail(null); // Close detail view
+  };
+
   return (
     <div className={`min-h-screen transition-colors duration-500 ${
       darkMode 
@@ -108,6 +127,7 @@ export default function App() {
             onToggleFavourite={handleToggleFavourite}
             onToggleHasHad={handleToggleHasHad}
             onUpdateRating={handleUpdateRating}
+            onEdit={handleOpenEdit}
             darkMode={darkMode}
           />
         )}
@@ -119,6 +139,18 @@ export default function App() {
           <AddCocktailForm
             onClose={() => setShowAddForm(false)}
             onAdd={handleAddCocktail}
+            darkMode={darkMode}
+          />
+        )}
+      </AnimatePresence>
+
+      {/* Edit Cocktail Form Modal */}
+      <AnimatePresence>
+        {editingCocktail && (
+          <EditCocktailForm
+            cocktail={editingCocktail}
+            onClose={() => setEditingCocktail(null)}
+            onSave={handleEditCocktail}
             darkMode={darkMode}
           />
         )}
