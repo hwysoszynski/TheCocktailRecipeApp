@@ -19,6 +19,7 @@
       --tw-gradient-from-position: 0%;
       --tw-gradient-via-position: 50%;
       --tw-gradient-to-position: 100%;
+      --tw-font-weight: initial;
       --tw-shadow: 0 0 #0000;
       --tw-shadow-color: initial;
       --tw-shadow-alpha: 100%;
@@ -64,6 +65,12 @@
   :root, :host {
     --font-sans: ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
     --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    --color-red-50: oklch(.971 .013 17.38);
+    --color-red-100: oklch(.936 .032 17.717);
+    --color-red-200: oklch(.885 .062 18.334);
+    --color-red-400: oklch(.704 .191 22.216);
+    --color-red-500: oklch(.637 .237 25.331);
+    --color-red-600: oklch(.577 .245 27.325);
     --color-yellow-500: oklch(.795 .184 86.047);
     --color-blue-400: oklch(.707 .165 254.624);
     --color-blue-500: oklch(.623 .214 259.815);
@@ -81,6 +88,7 @@
     --color-black: #000;
     --color-white: #fff;
     --spacing: .25rem;
+    --container-sm: 24rem;
     --container-md: 28rem;
     --text-xs: .75rem;
     --text-xs--line-height: calc(1 / .75);
@@ -455,6 +463,10 @@
     right: calc(var(--spacing) * 6);
   }
 
+  .right-16 {
+    right: calc(var(--spacing) * 16);
+  }
+
   .bottom-0 {
     bottom: calc(var(--spacing) * 0);
   }
@@ -487,6 +499,10 @@
     z-index: 50;
   }
 
+  .z-\[60\] {
+    z-index: 60;
+  }
+
   .mx-auto {
     margin-inline: auto;
   }
@@ -497,6 +513,10 @@
 
   .mt-3 {
     margin-top: calc(var(--spacing) * 3);
+  }
+
+  .mt-6 {
+    margin-top: calc(var(--spacing) * 6);
   }
 
   .mt-8 {
@@ -551,6 +571,10 @@
     height: calc(var(--spacing) * 10);
   }
 
+  .h-12 {
+    height: calc(var(--spacing) * 12);
+  }
+
   .h-14 {
     height: calc(var(--spacing) * 14);
   }
@@ -603,6 +627,10 @@
     width: calc(var(--spacing) * 10);
   }
 
+  .w-12 {
+    width: calc(var(--spacing) * 12);
+  }
+
   .w-14 {
     width: calc(var(--spacing) * 14);
   }
@@ -621,6 +649,10 @@
 
   .max-w-md {
     max-width: var(--container-md);
+  }
+
+  .max-w-sm {
+    max-width: var(--container-sm);
   }
 
   .min-w-0 {
@@ -785,6 +817,16 @@
     border-color: oklab(57.6121% -.0481847 -.069217 / .4);
   }
 
+  .border-gray-200\/20 {
+    border-color: color-mix(in srgb, oklch(.928 .006 264.531) 20%, transparent);
+  }
+
+  @supports (color: color-mix(in lab, red, red)) {
+    .border-gray-200\/20 {
+      border-color: color-mix(in oklab, var(--color-gray-200) 20%, transparent);
+    }
+  }
+
   .border-gray-600\/60 {
     border-color: color-mix(in srgb, oklch(.446 .03 256.802) 60%, transparent);
   }
@@ -812,6 +854,26 @@
   @supports (color: color-mix(in lab, red, red)) {
     .border-gray-700\/40 {
       border-color: color-mix(in oklab, var(--color-gray-700) 40%, transparent);
+    }
+  }
+
+  .border-red-200\/40 {
+    border-color: color-mix(in srgb, oklch(.885 .062 18.334) 40%, transparent);
+  }
+
+  @supports (color: color-mix(in lab, red, red)) {
+    .border-red-200\/40 {
+      border-color: color-mix(in oklab, var(--color-red-200) 40%, transparent);
+    }
+  }
+
+  .border-red-500\/30 {
+    border-color: color-mix(in srgb, oklch(.637 .237 25.331) 30%, transparent);
+  }
+
+  @supports (color: color-mix(in lab, red, red)) {
+    .border-red-500\/30 {
+      border-color: color-mix(in oklab, var(--color-red-500) 30%, transparent);
     }
   }
 
@@ -878,6 +940,16 @@
   @supports (color: color-mix(in lab, red, red)) {
     .bg-black\/40 {
       background-color: color-mix(in oklab, var(--color-black) 40%, transparent);
+    }
+  }
+
+  .bg-black\/60 {
+    background-color: #0009;
+  }
+
+  @supports (color: color-mix(in lab, red, red)) {
+    .bg-black\/60 {
+      background-color: color-mix(in oklab, var(--color-black) 60%, transparent);
     }
   }
 
@@ -948,6 +1020,30 @@
   @supports (color: color-mix(in lab, red, red)) {
     .bg-gray-800\/95 {
       background-color: color-mix(in oklab, var(--color-gray-800) 95%, transparent);
+    }
+  }
+
+  .bg-red-50\/80 {
+    background-color: color-mix(in srgb, oklch(.971 .013 17.38) 80%, transparent);
+  }
+
+  @supports (color: color-mix(in lab, red, red)) {
+    .bg-red-50\/80 {
+      background-color: color-mix(in oklab, var(--color-red-50) 80%, transparent);
+    }
+  }
+
+  .bg-red-500 {
+    background-color: var(--color-red-500);
+  }
+
+  .bg-red-500\/20 {
+    background-color: color-mix(in srgb, oklch(.637 .237 25.331) 20%, transparent);
+  }
+
+  @supports (color: color-mix(in lab, red, red)) {
+    .bg-red-500\/20 {
+      background-color: color-mix(in oklab, var(--color-red-500) 20%, transparent);
     }
   }
 
@@ -1323,6 +1419,11 @@
     line-height: var(--tw-leading, var(--text-xs--line-height));
   }
 
+  .font-medium {
+    --tw-font-weight: var(--font-weight-medium);
+    font-weight: var(--font-weight-medium);
+  }
+
   .whitespace-nowrap {
     white-space: nowrap;
   }
@@ -1373,6 +1474,18 @@
 
   .text-gray-900 {
     color: var(--color-gray-900);
+  }
+
+  .text-red-400 {
+    color: var(--color-red-400);
+  }
+
+  .text-red-500 {
+    color: var(--color-red-500);
+  }
+
+  .text-red-600 {
+    color: var(--color-red-600);
   }
 
   .text-white {
@@ -1570,6 +1683,36 @@
       .hover\:bg-gray-800\/60:hover {
         background-color: color-mix(in oklab, var(--color-gray-800) 60%, transparent);
       }
+    }
+  }
+
+  @media (hover: hover) {
+    .hover\:bg-red-100\/80:hover {
+      background-color: color-mix(in srgb, oklch(.936 .032 17.717) 80%, transparent);
+    }
+
+    @supports (color: color-mix(in lab, red, red)) {
+      .hover\:bg-red-100\/80:hover {
+        background-color: color-mix(in oklab, var(--color-red-100) 80%, transparent);
+      }
+    }
+  }
+
+  @media (hover: hover) {
+    .hover\:bg-red-500\/30:hover {
+      background-color: color-mix(in srgb, oklch(.637 .237 25.331) 30%, transparent);
+    }
+
+    @supports (color: color-mix(in lab, red, red)) {
+      .hover\:bg-red-500\/30:hover {
+        background-color: color-mix(in oklab, var(--color-red-500) 30%, transparent);
+      }
+    }
+  }
+
+  @media (hover: hover) {
+    .hover\:bg-red-600:hover {
+      background-color: var(--color-red-600);
     }
   }
 
@@ -1907,6 +2050,11 @@ html {
   syntax: "<length-percentage>";
   inherits: false;
   initial-value: 100%;
+}
+
+@property --tw-font-weight {
+  syntax: "*";
+  inherits: false
 }
 
 @property --tw-shadow {

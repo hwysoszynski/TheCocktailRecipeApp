@@ -1,6 +1,7 @@
-import { X, Star, Heart, Check } from 'lucide-react';
+import { X, Star, Heart, Check, Edit2, Trash2 } from 'lucide-react';
 import { Cocktail } from '../types/cocktail';
 import { motion } from 'motion/react';
+import { useState } from 'react';
 
 interface CocktailDetailProps {
   cocktail: Cocktail;
@@ -8,6 +9,8 @@ interface CocktailDetailProps {
   onToggleFavourite: (id: string) => void;
   onToggleHasHad: (id: string) => void;
   onUpdateRating: (id: string, rating: number) => void;
+  onEdit: (cocktail: Cocktail) => void;
+  onDelete: (id: string) => void;
   darkMode?: boolean;
 }
 
@@ -17,8 +20,17 @@ export function CocktailDetail({
   onToggleFavourite,
   onToggleHasHad,
   onUpdateRating,
+  onEdit,
+  onDelete,
   darkMode = false,
 }: CocktailDetailProps) {
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+
+  const handleDelete = () => {
+    onDelete(cocktail.id);
+    onClose();
+  };
+
   return (
     <motion.div
       initial={{ opacity: 0 }}
@@ -54,6 +66,14 @@ export function CocktailDetail({
                 className="absolute top-4 right-4 w-10 h-10 backdrop-blur-xl bg-white/30 border border-white/40 rounded-full flex items-center justify-center hover:bg-white/40 transition-all"
               >
                 <X size={20} className="text-white" />
+              </button>
+
+              {/* Edit Button */}
+              <button
+                onClick={() => onEdit(cocktail)}
+                className="absolute top-4 right-16 w-10 h-10 backdrop-blur-xl bg-white/30 border border-white/40 rounded-full flex items-center justify-center hover:bg-white/40 transition-all"
+              >
+                <Edit2 size={18} className="text-white" />
               </button>
 
               {/* Title Overlay */}
@@ -180,10 +200,79 @@ export function CocktailDetail({
                   ))}
                 </div>
               </div>
+
+              {/* Delete Button */}
+              <div className="mt-6 pt-6 border-t border-gray-200/20">
+                <button
+                  onClick={() => setShowDeleteConfirm(true)}
+                  className={`w-full flex items-center justify-center gap-2 px-4 py-3 rounded-2xl transition-all ${
+                    darkMode
+                      ? 'bg-red-500/20 text-red-400 hover:bg-red-500/30 border border-red-500/30'
+                      : 'bg-red-50/80 text-red-600 hover:bg-red-100/80 border border-red-200/40'
+                  }`}
+                >
+                  <Trash2 size={18} />
+                  <span className="text-sm">Delete Cocktail</span>
+                </button>
+              </div>
             </div>
           </div>
         </div>
       </motion.div>
+
+      {/* Delete Confirmation Dialog */}
+      {showDeleteConfirm && (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          className="fixed inset-0 z-[60] bg-black/60 backdrop-blur-sm flex items-center justify-center p-4"
+          onClick={() => setShowDeleteConfirm(false)}
+        >
+          <motion.div
+            initial={{ scale: 0.9, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            exit={{ scale: 0.9, opacity: 0 }}
+            onClick={(e) => e.stopPropagation()}
+            className={`w-full max-w-sm backdrop-blur-xl border rounded-3xl shadow-2xl p-6 ${
+              darkMode ? 'bg-gray-800/95 border-gray-700/40' : 'bg-white/95 border-white/40'
+            }`}
+          >
+            <div className="flex items-center gap-3 mb-4">
+              <div className="w-12 h-12 rounded-full bg-red-500/20 flex items-center justify-center">
+                <Trash2 size={24} className="text-red-500" />
+              </div>
+              <div>
+                <h3 className={`mb-1 ${darkMode ? 'text-gray-100' : 'text-gray-800'}`}>Delete Cocktail?</h3>
+                <p className={`text-sm ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>
+                  This action cannot be undone
+                </p>
+              </div>
+            </div>
+            
+            <p className={`mb-6 text-sm ${darkMode ? 'text-gray-300' : 'text-gray-700'}`}>
+              Are you sure you want to delete <span className="font-medium">{cocktail.name}</span>? All associated data will be permanently removed.
+            </p>
+
+            <div className="flex gap-3">
+              <button
+                onClick={() => setShowDeleteConfirm(false)}
+                className={`flex-1 px-4 py-2.5 rounded-2xl transition-all text-sm ${
+                  darkMode ? 'bg-gray-700/60 text-gray-200 hover:bg-gray-700/80' : 'bg-white/60 text-gray-700 hover:bg-white/80'
+                }`}
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleDelete}
+                className="flex-1 px-4 py-2.5 bg-red-500 text-white rounded-2xl hover:bg-red-600 transition-all text-sm"
+              >
+                Delete
+              </button>
+            </div>
+          </motion.div>
+        </motion.div>
+      )}
     </motion.div>
   );
 }
