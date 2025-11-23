@@ -1,19 +1,32 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { HomeScreen } from './components/HomeScreen';
 import { CocktailList } from './components/CocktailList';
 import { SettingsScreen } from './components/SettingsScreen';
 import { CocktailDetail } from './components/CocktailDetail';
 import { AddCocktailForm } from './components/AddCocktailForm';
 import { BottomNav } from './components/BottomNav';
-import { MOCK_COCKTAILS, Cocktail } from './types/cocktail';
+import { Cocktail } from './types/cocktail';
 import { AnimatePresence } from 'motion/react';
+import { loadCocktails, saveCocktails, loadDarkMode, saveDarkMode } from './utils/storage';
 
 export default function App() {
   const [activeTab, setActiveTab] = useState<'home' | 'list' | 'settings'>('home');
-  const [cocktails, setCocktails] = useState<Cocktail[]>(MOCK_COCKTAILS);
+  // Load cocktails from localStorage on initialization
+  const [cocktails, setCocktails] = useState<Cocktail[]>(() => loadCocktails());
   const [selectedCocktail, setSelectedCocktail] = useState<Cocktail | null>(null);
   const [showAddForm, setShowAddForm] = useState(false);
-  const [darkMode, setDarkMode] = useState(false);
+  // Load dark mode preference from localStorage on initialization
+  const [darkMode, setDarkMode] = useState(() => loadDarkMode());
+
+  // Save cocktails to localStorage whenever they change
+  useEffect(() => {
+    saveCocktails(cocktails);
+  }, [cocktails]);
+
+  // Save dark mode preference to localStorage whenever it changes
+  useEffect(() => {
+    saveDarkMode(darkMode);
+  }, [darkMode]);
 
   const handleToggleFavourite = (id: string) => {
     setCocktails((prev) =>
@@ -62,7 +75,8 @@ export default function App() {
   };
 
   const handleAddCocktail = (newCocktail: Omit<Cocktail, 'id'>) => {
-    const id = (cocktails.length + 1).toString();
+    // Generate a unique ID based on timestamp to avoid conflicts
+    const id = Date.now().toString();
     setCocktails((prev) => [...prev, { ...newCocktail, id }]);
   };
 
